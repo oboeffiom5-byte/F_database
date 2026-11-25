@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+    <style>
+        :root {
+            --ink: #0b1220;
+            --blue: #2f5bff;
+            --blue-dark: #2447d6;
+            --line: #dfe4ee;
+            --muted: #667085;
+            --bg: #f5f7fb;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+        .wrap { display: grid; grid-template-columns: 1.05fr 1fr; min-height: 100vh; }
+
+        .brand {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px 56px;
+            color: #ffffff;
+            background: linear-gradient(155deg, #0b1220 0%, #16254d 100%);
+        }
+        .brand::before {
+            content: "";
+            position: absolute;
+            width: 520px; height: 520px;
+            right: -160px; bottom: -180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(47, 91, 255, 0.55), rgba(47, 91, 255, 0) 70%);
+        }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: #ffffff; text-decoration: none; position: relative; }
+        .logo-mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #5b7bff, #2f5bff); }
+        .brand h2 { margin: 0 0 14px; font-size: 40px; line-height: 1.12; letter-spacing: -0.03em; max-width: 420px; position: relative; }
+        .brand p { margin: 0; max-width: 380px; color: #b4bfdc; font-size: 16px; line-height: 1.6; position: relative; }
+        .brand small { color: #7f8bb0; position: relative; }
+
+        .form-side { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+        .form-box { width: 100%; max-width: 380px; }
+        .form-box h1 { margin: 0 0 8px; font-size: 30px; letter-spacing: -0.025em; }
+        .subtitle { margin: 0 0 28px; color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+        .message {
+            margin: 0 0 20px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #f5c9c4;
+            background: #fff3f1;
+            color: #b42318;
+            font-size: 14px;
+        }
+        label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 600; }
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #ffffff;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--ink);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(47, 91, 255, 0.15); }
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 4px;
+            border: none;
+            border-radius: 12px;
+            background: var(--blue);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(47, 91, 255, 0.28);
+            transition: background 0.15s;
+        }
+        button:hover { background: var(--blue-dark); }
+        .links { margin: 22px 0 0; text-align: center; font-size: 14px; color: var(--muted); }
+        .links a { color: var(--blue); font-weight: 600; text-decoration: none; }
+        .links a:hover { text-decoration: underline; }
+        .links + .links { margin-top: 10px; }
+
+        @media (max-width: 860px) {
+            .wrap { grid-template-columns: 1fr; }
+            .brand { padding: 24px; }
+            .brand h2, .brand p, .brand small { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="brand">
+            <a class="logo" href="/"><span class="logo-mark"></span>UserHub</a>
+            <div>
+                <h2>Good to see you again.</h2>
+                <p>Log in to pick up right where you left off.</p>
+            </div>
+            <small>&copy; 2026 UserHub</small>
+        </div>
+
+        <div class="form-side">
+            <div class="form-box">
+                <h1>Welcome back</h1>
+                <p class="subtitle">Log in to your account.</p>
+
+                {% if message %}
+                    <p class="message">{{ message }}</p>
+                {% endif %}
+
+                <form method="POST" action="/login">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Your password" required>
+
+                    <button type="submit">Log in</button>
+                </form>
+
+                <p class="links">New here? <a href="/signup">Create an account</a></p>
+                <p class="links"><a href="/admin/login">Administrator login</a> &middot; <a href="/">Home</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
