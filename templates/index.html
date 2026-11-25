@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserHub</title>
+    <style>
+        :root {
+            --ink: #0b1220;
+            --blue: #2f5bff;
+            --blue-dark: #2447d6;
+            --line: #dfe4ee;
+            --muted: #667085;
+            --bg: #f5f7fb;
+            --mint: #12b76a;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; }
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+        .nav .container { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--ink); }
+        .logo-mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #5b7bff, #2f5bff); }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { color: var(--muted); font-size: 15px; font-weight: 500; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .btn-primary { background: var(--blue); color: #ffffff; box-shadow: 0 8px 20px rgba(47, 91, 255, 0.28); }
+        .btn-primary:hover { background: var(--blue-dark); }
+        .btn-ghost { color: var(--ink); border: 1px solid var(--line); background: #ffffff; }
+        .btn-ghost:hover { border-color: #b9c2d3; }
+        .btn-large { padding: 15px 28px; font-size: 16px; }
+
+        /* Hero */
+        .hero { position: relative; overflow: hidden; padding: 84px 0 96px; background: var(--bg); }
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 640px; height: 640px;
+            right: -180px; top: -240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(47, 91, 255, 0.22), rgba(47, 91, 255, 0) 70%);
+        }
+        .hero .container { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            margin-bottom: 24px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); }
+        .hero h1 { margin: 0 0 20px; font-size: 58px; line-height: 1.04; letter-spacing: -0.04em; }
+        .hero p { margin: 0 0 32px; max-width: 470px; font-size: 18px; line-height: 1.6; color: var(--muted); }
+        .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        /* Dashboard preview (pure CSS) */
+        .preview {
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: #ffffff;
+            box-shadow: 0 30px 60px rgba(11, 18, 32, 0.12);
+        }
+        .preview-top { display: flex; gap: 6px; margin-bottom: 18px; }
+        .preview-top span { width: 10px; height: 10px; border-radius: 50%; background: #dfe4ee; }
+        .preview-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .preview-stat { padding: 16px; border-radius: 14px; background: var(--bg); }
+        .preview-stat small { color: var(--muted); font-size: 12px; }
+        .preview-stat b { display: block; margin-top: 4px; font-size: 26px; letter-spacing: -0.02em; }
+        .preview-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 14px; }
+        .avatar {
+            width: 34px; height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: #e5ebff;
+            color: var(--blue);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .preview-row span:last-child { margin-left: auto; color: var(--mint); font-weight: 600; font-size: 12px; }
+
+        /* Features */
+        .section { padding: 96px 0; }
+        .section-head { max-width: 560px; margin-bottom: 48px; }
+        .section-head h2 { margin: 0 0 14px; font-size: 38px; letter-spacing: -0.03em; line-height: 1.15; }
+        .section-head p { margin: 0; color: var(--muted); font-size: 17px; line-height: 1.6; }
+        .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .feature { padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: #ffffff; }
+        .icon {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: #e5ebff;
+            color: var(--blue);
+            font-weight: 800;
+            font-size: 18px;
+        }
+        .feature h3 { margin: 0 0 8px; font-size: 18px; }
+        .feature p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+        /* Call to action */
+        .cta { padding: 0 0 96px; }
+        .cta-box {
+            padding: 64px 40px;
+            border-radius: 28px;
+            text-align: center;
+            color: #ffffff;
+            background: linear-gradient(155deg, #0b1220 0%, #16254d 100%);
+        }
+        .cta-box h2 { margin: 0 0 12px; font-size: 38px; letter-spacing: -0.03em; }
+        .cta-box p { margin: 0 0 28px; color: #b4bfdc; font-size: 17px; }
+
+        .footer { padding: 28px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+        .footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .footer a { color: var(--muted); }
+        .footer a:hover { color: var(--ink); }
+
+        @media (max-width: 900px) {
+            .hero .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 42px; }
+            .features { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .section { padding: 64px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <div class="container">
+            <a class="logo" href="/"><span class="logo-mark"></span>UserHub</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="/admin/login">Admin</a>
+            </div>
+            <div class="nav-actions">
+                <a class="btn btn-ghost" href="/login">Log in</a>
+                <a class="btn btn-primary" href="/signup">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="container">
+            <div>
+                <div class="pill"><span class="dot"></span>Secure account management</div>
+                <h1>Manage your users with clarity.</h1>
+                <p>Create an account in seconds, sign in securely, and let administrators see who is registered and what is happening.</p>
+                <div class="hero-buttons">
+                    <a class="btn btn-primary btn-large" href="/signup">Create free account</a>
+                    <a class="btn btn-ghost btn-large" href="/login">Log in</a>
+                </div>
+            </div>
+
+            <div class="preview">
+                <div class="preview-top"><span></span><span></span><span></span></div>
+                <div class="preview-stats">
+                    <div class="preview-stat"><small>Registered users</small><b>1,284</b></div>
+                    <div class="preview-stat"><small>Administrators</small><b>6</b></div>
+                </div>
+                <div class="preview-row"><div class="avatar">A</div><div>Ada signed in</div><span>Active</span></div>
+                <div class="preview-row"><div class="avatar">T</div><div>Tobi created an account</div><span>Active</span></div>
+                <div class="preview-row"><div class="avatar">N</div><div>Ngozi signed in</div><span>Active</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="features">
+        <div class="container">
+            <div class="section-head">
+                <h2>Everything you need, nothing you don't.</h2>
+                <p>A focused set of tools for signing up, signing in and keeping an eye on your accounts.</p>
+            </div>
+            <div class="features">
+                <div class="feature">
+                    <div class="icon">1</div>
+                    <h3>Quick sign up</h3>
+                    <p>Register with a username, email and password. Your password is stored securely as a hash.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">2</div>
+                    <h3>Safe sign in</h3>
+                    <p>Clear messages tell you what went wrong, and inactive accounts are kept out.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">3</div>
+                    <h3>Admin overview</h3>
+                    <p>Administrators see every user, their role and status, plus the latest activity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ready to get started?</h2>
+                <p>Create your account and be inside in under a minute.</p>
+                <a class="btn btn-primary btn-large" href="/signup">Create free account</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <span>&copy; 2026 UserHub</span>
+            <a href="/admin/login">Administrator login</a>
+        </div>
+    </div>
+
+</body>
+</html>
